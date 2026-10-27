@@ -1,0 +1,81 @@
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="caixa-login">
+        <h1>Bem-vindo!</h1>
+        <p>Entre na sua conta</p>
+
+        <form id="formLogin">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="Digite seu e-mail" required>
+
+            <label for="senha">Senha</label>
+<input type="password" id="senha" placeholder="Digite sua senha" minlength="8" required>
+            <button type="submit">Entrar</button>
+            <p id="mensagem"></p>
+        </form>
+
+        <p>Não tem uma conta?
+            <a href="cadastro.html">Cadastre-se</a>
+        </p>
+    </div>
+
+    <script>
+        const form = document.getElementById("formLogin");
+        const mensagem = document.getElementById("mensagem");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value.trim();
+            const senha = document.getElementById("senha").value;
+
+            // Usuário fixo solicitado
+            if (email === "JulianoB@gmail.com" && senha === "21751380") {
+                mensagem.style.color = "green";
+                mensagem.textContent = "Login válido!";
+
+                setTimeout(() => {
+                    window.location.href = "Perfil.html";
+                }, 700);
+
+                return;
+            }
+
+            // Verifica usuários cadastrados neste navegador
+            const usuarios = JSON.parse(
+                localStorage.getItem("usuarios") || "[]"
+            );
+
+            const usuario = usuarios.find(
+                u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha
+            );
+
+            if (usuario) {
+                mensagem.style.color = "green";
+                mensagem.textContent = "Login válido!";
+
+                setTimeout(() => {
+                    window.location.href = "Perfil.html";
+                }, 700);
+            } else {
+                mensagem.style.color = "red";
+                mensagem.textContent = "E-mail ou senha inválidos!";
+            }
+        });
+    </script>
+</body>
+</html>

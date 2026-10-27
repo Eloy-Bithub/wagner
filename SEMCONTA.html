@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="caixa-login">
+        <h1>Criar conta</h1>
+        <p>Preencha seus dados abaixo</p>
+
+        <form id="formCadastro">
+            <label for="usuario">Nome de usuário</label>
+            <input type="text" id="usuario"
+                   placeholder="Ex.: JulianoB" required>
+
+            <label for="email">E-mail</label>
+            <input type="email" id="email"
+                   placeholder="seu@email.com" required>
+
+            <label for="senha">Senha</label>
+            <input type="password" id="senha"
+                   placeholder="Crie uma senha" required>
+
+            <label for="confirmarSenha">Confirmar senha</label>
+            <input type="password" id="confirmarSenha"
+                   placeholder="Digite a senha novamente" required>
+
+            <button type="submit">Cadastrar</button>
+            <p id="mensagem"></p>
+        </form>
+
+        <p>Já tem uma conta?
+            <a href="index.html">Fazer login</a>
+        </p>
+    </div>
+
+    <script>
+        const form = document.getElementById("formCadastro");
+        const mensagem = document.getElementById("mensagem");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const usuario = document.getElementById("usuario").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const senha = document.getElementById("senha").value;
+            const confirmar = document.getElementById("confirmarSenha").value;
+
+            if (senha !== confirmar) {
+                mensagem.style.color = "red";
+                mensagem.textContent = "As senhas não são iguais!";
+                return;
+            }
+
+            const usuarios = JSON.parse(
+                localStorage.getItem("usuarios") || "[]"
+            );
+
+            if (usuarios.some(
+                u => u.email.toLowerCase() === email.toLowerCase()
+            )) {
+                mensagem.style.color = "red";
+                mensagem.textContent = "Este e-mail já está cadastrado!";
+                return;
+            }
+
+            usuarios.push({ usuario, email, senha });
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+            mensagem.style.color = "green";
+            mensagem.textContent = "Cadastro realizado com sucesso!";
+
+            setTimeout(() => {
+                window.location.href = "Perfil.html";
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
